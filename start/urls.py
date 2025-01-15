@@ -17,9 +17,7 @@ Including another URLconf
 
 from django.urls import path, include
 from home import views as home
-from product import views as product
 
 urlpatterns = [
-    path("", home.get_home),
-    path("product/", include("product.urls")),
+    path("", include("home.urls")),
 ]
