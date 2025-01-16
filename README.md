@@ -16,3 +16,8 @@ python manage.py migrate
 ### run server
 
 python manage.py runserver localhost:8000
+
+### password admin
+
+username: root
+password: root

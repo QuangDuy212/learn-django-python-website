@@ -16,12 +16,20 @@ class Customer(models.Model):
 
 class Product(models.Model):
     name = models.CharField(max_length=200, null=True)
-    imageUrl = models.CharField(max_length=200, null=True)
+    image = models.ImageField(null=True, blank=True)
     price = models.FloatField()
     description = models.CharField(max_length=200, null=True)
 
     def __str__(self):
         return self.name
+
+    @property
+    def ImageURL(self):
+        try:
+            url = self.image.url
+        except:
+            url = ""
+        return url
 
 
 class Order(models.Model):
