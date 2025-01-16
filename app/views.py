@@ -1,26 +1,35 @@
 from django.shortcuts import render
+from django.http import HttpResponse
+from .models import *
 
 
 # Create your views here.
 def index(request):
-    return render(request, "home.html")
+    products = Product.objects.all()[:3]
+    context = {"products": products}
+    return render(request, "home.html", context)
 
 
 def shop(request):
-    return render(request, "shop.html")
+    context = {}
+    return render(request, "shop.html", context)
 
 
 def about(request):
-    return render(request, "about.html")
+    context = {}
+    return render(request, "about.html", context)
 
 
 def services(request):
-    return render(request, "services.html")
+    context = {}
+    return render(request, "services.html", context)
 
 
 def blog(request):
-    return render(request, "blog.html")
+    context = {}
+    return render(request, "blog.html", context)
 
 
 def contact(request):
-    return render(request, "contact.html")
+    context = {}
+    return render(request, "contact.html", context)

@@ -2,7 +2,9 @@ from django.db import models
 from django.contrib.auth.models import User
 
 
-# Create your models here.
+# Create your models here
+
+
 class Customer(models.Model):
     user = models.OneToOneField(User, on_delete=models.SET_NULL, null=True, blank=False)
     name = models.CharField(max_length=200, null=True)
@@ -14,6 +16,7 @@ class Customer(models.Model):
 
 class Product(models.Model):
     name = models.CharField(max_length=200, null=True)
+    imageUrl = models.CharField(max_length=200, null=True)
     price = models.FloatField()
     description = models.CharField(max_length=200, null=True)
 
