@@ -1,19 +1,16 @@
-<!-- /*
+<!--                                                                          /*
 * Bootstrap 5
 * Template Name: Furni
 * Template Author: Untree.co
 * Template URI: https://untree.co/
 * License: https://creativecommons.org/licenses/by/3.0/
-*/ -->
+*/                                                                          -->
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1, shrink-to-fit=no"
-    />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta name="author" content="Untree.co" />
     <link rel="shortcut icon" href="{% static 'app/favicon.png' %}" />
 
@@ -21,111 +18,80 @@
     <meta name="keywords" content="bootstrap, bootstrap4" />
 
     <!-- Bootstrap CSS -->
-    <link href="{%static 'app/css/bootstrap.min.css' %}" rel="stylesheet" />
-    <link
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
-      rel="stylesheet"
-    />
-    <link href="{%static 'app/css/tiny-slider.css' %}" rel="stylesheet" />
-    <link href="{%static 'app/css/style.css' %}" rel="stylesheet" />
-    <title>
-      Furni Free Bootstrap 5 Template for Furniture and Interior Design Websites
-      by Untree.co
-    </title>
+    <link href="{% static 'app/css/bootstrap.min.css' %}" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet" />
+    <link href="{% static 'app/css/tiny-slider.css' %}" rel="stylesheet" />
+    <link href="{% static 'app/css/page.css' %}" rel="stylesheet" />
+    <link href="{% static 'app/css/style.css' %}" rel="stylesheet" />
+    <title>Furni Free Bootstrap 5 Template for Furniture and Interior Design Websites by Untree.co</title>
   </head>
 
   <body>
     <!-- Start Header/Navigation -->
-    <nav
-      class="custom-navbar navbar navbar navbar-expand-md navbar-dark bg-dark"
-      arial-label="Furni navigation bar"
-    >
+    <nav class="custom-navbar navbar navbar navbar-expand-md navbar-dark bg-dark" arial-label="Furni navigation bar">
       <div class="container">
         <a class="navbar-brand" href="index.html">Furni<span>.</span></a>
 
-        <button
-          class="navbar-toggler"
-          type="button"
-          data-bs-toggle="collapse"
-          data-bs-target="#navbarsFurni"
-          aria-controls="navbarsFurni"
-          aria-expanded="false"
-          aria-label="Toggle navigation"
-        >
-          <span class="navbar-toggler-icon"></span>
-        </button>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsFurni" aria-controls="navbarsFurni" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
 
         <div class="collapse navbar-collapse" id="navbarsFurni">
           <ul class="custom-navbar-nav navbar-nav ms-auto mb-2 mb-md-0">
             <li class="nav-item">
               <a class="nav-link" href="/">Home</a>
             </li>
-            <li class="nav-item "><a class="nav-link" href="{% url "shop" %}">Shop</a></li>
-            <li class="nav-item "> <a class="nav-link" href="{% url "about" %}">About us</a></li>
-            <li class="nav-item "><a class="nav-link" href="{% url "services" %}">Services</a></li>
-            <li class="nav-item "><a class="nav-link" href="{% url "blog" %}">Blog</a></li>
-            <li class="nav-item "><a class="nav-link" href="{% url "contact" %}">Contact us</a></li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'shop' %}">Shop</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'about' %}">About us</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'services' %}">Services</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'blog' %}">Blog</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'contact' %}">Contact us</a>
+            </li>
           </ul>
 
           <ul class="custom-navbar-cta navbar-nav mb-2 mb-md-0 ms-5">
             <li>
-              <a class="nav-link" href="#"
-                ><img src="{%static 'app/images/user.svg' %}"
-              /></a>
+              <a class="nav-link" href="#"><img src="{% static 'app/images/user.svg' %}" /></a>
             </li>
             <li>
-              <a class="nav-link" href="cart.html"
-                ><img src="{%static 'app/images/cart.svg' %}"
-              /></a>
+              <a class="nav-link" href="{% url 'cart' %}"><img src="{% static 'app/images/cart.svg' %}" /></a>
             </li>
           </ul>
         </div>
       </div>
     </nav>
     <!-- End Header/Navigation -->
-    {% block main-content %}{%endblock main-content %}
+    {% block mainContent %}
+
+    {% endblock %}
     <!-- Start Footer Section -->
     <footer class="footer-section">
       <div class="container relative">
         <div class="sofa-img">
-          <img
-            src="{%static 'app/images/sofa.png' %}"
-            alt="Image"
-            class="img-fluid"
-          />
+          <img src="{% static 'app/images/sofa.png' %}" alt="Image" class="img-fluid" />
         </div>
 
         <div class="row">
           <div class="col-lg-8">
             <div class="subscription-form">
-              <h3 class="d-flex align-items-center">
-                <span class="me-1"
-                  ><img
-                    src="{%static 'app/images/envelope-outline.svg' %}"
-                    alt="Image"
-                    class="img-fluid" /></span
-                ><span>Subscribe to Newsletter</span>
-              </h3>
+              <h3 class="d-flex align-items-center"><span class="me-1"><img src="{% static 'app/images/envelope-outline.svg' %}" alt="Image" class="img-fluid" /></span><span>Subscribe to Newsletter</span></h3>
 
               <form action="#" class="row g-3">
                 <div class="col-auto">
-                  <input
-                    type="text"
-                    class="form-control"
-                    placeholder="Enter your name"
-                  />
+                  <input type="text" class="form-control" placeholder="Enter your name" />
                 </div>
                 <div class="col-auto">
-                  <input
-                    type="email"
-                    class="form-control"
-                    placeholder="Enter your email"
-                  />
+                  <input type="email" class="form-control" placeholder="Enter your email" />
                 </div>
                 <div class="col-auto">
-                  <button class="btn btn-primary">
-                    <span class="fa fa-paper-plane"></span>
-                  </button>
+                  <button class="btn btn-primary"><span class="fa fa-paper-plane"></span></button>
                 </div>
               </form>
             </div>
@@ -137,12 +103,7 @@
             <div class="mb-4 footer-logo-wrap">
               <a href="#" class="footer-logo">Furni<span>.</span></a>
             </div>
-            <p class="mb-4">
-              Donec facilisis quam ut purus rutrum lobortis. Donec vitae odio
-              quis nisl dapibus malesuada. Nullam ac aliquet velit. Aliquam
-              vulputate velit imperdiet dolor tempor tristique. Pellentesque
-              habitant
-            </p>
+            <p class="mb-4">Donec facilisis quam ut purus rutrum lobortis. Donec vitae odio quis nisl dapibus malesuada. Nullam ac aliquet velit. Aliquam vulputate velit imperdiet dolor tempor tristique. Pellentesque habitant</p>
 
             <ul class="list-unstyled custom-social">
               <li>
@@ -164,35 +125,63 @@
             <div class="row links-wrap">
               <div class="col-6 col-sm-6 col-md-3">
                 <ul class="list-unstyled">
-                  <li><a href="#">About us</a></li>
-                  <li><a href="#">Services</a></li>
-                  <li><a href="#">Blog</a></li>
-                  <li><a href="#">Contact us</a></li>
+                  <li>
+                    <a href="#">About us</a>
+                  </li>
+                  <li>
+                    <a href="#">Services</a>
+                  </li>
+                  <li>
+                    <a href="#">Blog</a>
+                  </li>
+                  <li>
+                    <a href="#">Contact us</a>
+                  </li>
                 </ul>
               </div>
 
               <div class="col-6 col-sm-6 col-md-3">
                 <ul class="list-unstyled">
-                  <li><a href="#">Support</a></li>
-                  <li><a href="#">Knowledge base</a></li>
-                  <li><a href="#">Live chat</a></li>
+                  <li>
+                    <a href="#">Support</a>
+                  </li>
+                  <li>
+                    <a href="#">Knowledge base</a>
+                  </li>
+                  <li>
+                    <a href="#">Live chat</a>
+                  </li>
                 </ul>
               </div>
 
               <div class="col-6 col-sm-6 col-md-3">
                 <ul class="list-unstyled">
-                  <li><a href="#">Jobs</a></li>
-                  <li><a href="#">Our team</a></li>
-                  <li><a href="#">Leadership</a></li>
-                  <li><a href="#">Privacy Policy</a></li>
+                  <li>
+                    <a href="#">Jobs</a>
+                  </li>
+                  <li>
+                    <a href="#">Our team</a>
+                  </li>
+                  <li>
+                    <a href="#">Leadership</a>
+                  </li>
+                  <li>
+                    <a href="#">Privacy Policy</a>
+                  </li>
                 </ul>
               </div>
 
               <div class="col-6 col-sm-6 col-md-3">
                 <ul class="list-unstyled">
-                  <li><a href="#">Nordic Chair</a></li>
-                  <li><a href="#">Kruzo Aero</a></li>
-                  <li><a href="#">Ergonomic Chair</a></li>
+                  <li>
+                    <a href="#">Nordic Chair</a>
+                  </li>
+                  <li>
+                    <a href="#">Kruzo Aero</a>
+                  </li>
+                  <li>
+                    <a href="#">Ergonomic Chair</a>
+                  </li>
                 </ul>
               </div>
             </div>
@@ -203,11 +192,9 @@
           <div class="row pt-4">
             <div class="col-lg-6">
               <p class="mb-2 text-center text-lg-start">
-                Copyright &copy;
-                <script>
-                  document.write(new Date().getFullYear());
-                </script>
-                . All Rights Reserved. &mdash; Designed with love by
+                Copyright &copy;<script>
+                                  document.write(new Date().getFullYear())
+                                </script>. All Rights Reserved. &mdash; Designed with love by
                 <a href="https://untree.co">Untree.co</a> Distributed By
                 <a hreff="https://themewagon.com">ThemeWagon</a>
                 <!-- License information: https://untree.co/license/ -->
@@ -216,8 +203,12 @@
 
             <div class="col-lg-6 text-center text-lg-end">
               <ul class="list-unstyled d-inline-flex ms-auto">
-                <li class="me-4"><a href="#">Terms &amp; Conditions</a></li>
-                <li><a href="#">Privacy Policy</a></li>
+                <li class="me-4">
+                  <a href="#">Terms &amp; Conditions</a>
+                </li>
+                <li>
+                  <a href="#">Privacy Policy</a>
+                </li>
               </ul>
             </div>
           </div>
@@ -229,33 +220,42 @@
     <script>
       document.addEventListener('DOMContentLoaded', () => {
         // Lấy pathname hiện tại của URL (không bao gồm domain)
-        const currentPath = window.location.pathname;
-    
+        const currentPath = window.location.pathname
         // Lấy tất cả các thẻ <a> có class "nav-link"
-        const navLinks = document.querySelectorAll('.nav-link');
-    
+        const navLinks = document.querySelectorAll('.nav-link')
         // Lặp qua từng thẻ <a> để kiểm tra pathname
-        navLinks.forEach(link => {
-            // Kiểm tra nếu href của thẻ <a> trùng với pathname hiện tại
-            if (link.pathname === currentPath) {
-                // Thêm class "active" vào thẻ <li> cha của thẻ <a>
-                const parentLi = link.closest('.nav-item');
-                if (parentLi) {
-                    parentLi.classList.add('active');
-                }
-            } else {
-                // Xóa class "active" nếu không trùng
-                const parentLi = link.closest('.nav-item');
-                if (parentLi) {
-                    parentLi.classList.remove('active');
-                }
+        navLinks.forEach((link) => {
+          // Kiểm tra nếu href của thẻ <a> trùng với pathname hiện tại
+          if (link.pathname === currentPath) {
+            // Thêm class "active" vào thẻ <li> cha của thẻ <a>
+            const parentLi = link.closest('.nav-item')
+            if (parentLi) {
+              parentLi.classList.add('active')
             }
-        });
-    });
-    
+          } else {
+            // Xóa class "active" nếu không trùng
+            const parentLi = link.closest('.nav-item')
+            if (parentLi) {
+              parentLi.classList.remove('active')
+            }
+          }
+        })
+        const params = new URLSearchParams(window.location.search)
+        const currentPage = params.get('page')
+        // Nếu không có tham số "page", mặc định là trang 1
+        const activePage = currentPage || '1'
+        console.log('>>> check activePage:', activePage)
+        const pageLinks = document.querySelectorAll('div[class="pagination:number"] a')
+        pageLinks.forEach((link) => {
+          const closestDiv = link.closest('div')
+          if (link.href.includes(`page=${activePage}`)) {
+            closestDiv.classList.add('pagination:active')
+          }
+        })
+      })
     </script>
-    <script src="{%static 'app/js/bootstrap.bundle.min.js' %}"></script>
-    <script src="{%static 'app/js/tiny-slider.js' %}"></script>
-    <script src="{%static 'app/js/custom.js' %}"></script>
+    <script src="{% static 'app/js/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static 'app/js/tiny-slider.js' %}"></script>
+    <script src="{% static 'app/js/custom.js' %}"></script>
   </body>
 </html>
