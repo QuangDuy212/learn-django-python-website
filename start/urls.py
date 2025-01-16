@@ -16,8 +16,8 @@ Including another URLconf
 """
 
 from django.urls import path, include
-from home import views as home
+from app import views as app
 
 urlpatterns = [
-    path("", include("home.urls")),
+    path("", include("app.urls")),
 ]
