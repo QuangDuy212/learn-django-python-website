@@ -1,8 +1,10 @@
 from django.shortcuts import render
-from django.http import HttpResponse
 from .models import *
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.http import Http404
+from django.http import JsonResponse
+from django.views.decorators.http import require_POST
+from django.shortcuts import redirect
 
 
 def paginate_queryset(queryset, page, per_page=10):
@@ -45,9 +47,9 @@ def shop(request):
     products = Product.objects.all()
     page_number = request.GET.get("page")  # Lấy số trang từ URL
     try:
-        page_obj, is_paginated, total = paginate_queryset(products, page_number, 1)
+        page_obj, is_paginated, total = paginate_queryset(products, page_number)
     except Http404:
-        page_obj, is_paginated, total = paginate_queryset(products, 1, 1)
+        page_obj, is_paginated, total = paginate_queryset(products, 1)
     products = Product.objects.all()
     if is_paginated:
         numbers = range(1, total + 1)
@@ -83,5 +85,59 @@ def contact(request):
 
 
 def cart(request):
-    context = {}
+    if request.user.is_authenticated:
+        customer = request.user.customer
+        cart = Cart.objects.get(customer=customer)
+        items = cart.items.all()
+        total = sum([item.Total for item in items])
+    else:
+        items = []
+        total = 0
+    context = {"items": items, "total": total}
     return render(request, "cart.html", context)
+
+
+def checkout(request):
+    context = {}
+    return render(request, "checkout.html", context)
+
+
+def thankyou(request):
+    context = {}
+    return render(request, "thankyou.html", context)
+
+
+def add_to_cart(request, id):
+    try:
+        product = Product.objects.get(id=id)
+        cart, created = Cart.objects.get_or_create(user=request.user, active=True)
+        if cart is None:
+            cart = Cart.objects.create(user=request.user, active=True)
+        cart_item, created = CartItem.objects.get_or_create(cart=cart, product=product)
+        if created:
+            cart_item.quantity += 1
+        else:
+            cart_item.quantity = 1
+        cart_item.save()
+        cart.save()
+        return JsonResponse({"success": True, "message": "Product added to cart"})
+    except Product.DoesNotExist:
+        return JsonResponse({"success": False, "message": "Product not found"})
+    except Exception as e:
+        return JsonResponse({"success": False, "message": str(e)})
+
+
+def add_quantity(request, id, quantity):
+    cart_item = CartItem.objects.get(id=id)
+    if quantity == "1":
+        cart_item.quantity += 1
+    elif quantity == "-1":
+        cart_item.quantity -= 1
+    cart_item.save()
+    return redirect("cart")
+
+
+def remove_from_cart(request, id):
+    cart_item = CartItem.objects.get(id=id)
+    cart_item.delete()
+    return redirect("cart")

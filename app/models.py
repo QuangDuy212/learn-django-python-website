@@ -66,3 +66,32 @@ class Shipping(models.Model):
 
     def __str__(self):
         return self.address
+
+
+class Cart(models.Model):
+    customer = models.ForeignKey(
+        Customer, on_delete=models.SET_NULL, null=True, blank=True
+    )
+    date_created = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Cart {self.id} for {self.customer.name}"
+
+
+class CartItem(models.Model):
+    cart = models.ForeignKey(Cart, on_delete=models.CASCADE, related_name="items")
+    product = models.ForeignKey(
+        Product, on_delete=models.SET_NULL, null=True, blank=True
+    )
+    quantity = models.IntegerField(default=1)
+
+    def __str__(self):
+        return f"{self.quantity} of {self.product.name} in Cart {self.cart.id}"
+
+    @property
+    def Total(self):
+        try:
+            total = self.product.price * self.quantity
+        except:
+            total = self.product.price
+        return total
