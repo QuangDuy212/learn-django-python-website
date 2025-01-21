@@ -5,6 +5,9 @@ from django.http import Http404
 from django.http import JsonResponse
 from django.views.decorators.http import require_POST
 from django.shortcuts import redirect
+from django.contrib.auth import authenticate, login as auth_login, logout as auth_logout
+from django.contrib.auth.models import User
+from django.contrib import messages
 
 
 def paginate_queryset(queryset, page, per_page=10):
@@ -41,6 +44,41 @@ def index(request):
     products = Product.objects.all()[:3]
     context = {"products": products}
     return render(request, "home.html", context)
+
+
+def auth(request):
+    context = {}
+    return render(request, "auth.html", context)
+
+
+def login(request):
+    if request.method == "POST":
+        username = request.POST.get("username")
+        password = request.POST.get("password")
+        user = authenticate(request, username=username, password=password)
+        if user is not None:
+            auth_login(request, user)
+            return redirect("index")
+        else:
+            messages.error(request, "Invalid username or password")
+    return render(request, "auth.html")
+
+
+def signup(request):
+    if request.method == "POST":
+        username = request.POST.get("username")
+        email = request.POST.get("email")
+        password = request.POST.get("password")
+        if User.objects.filter(username=username).exists():
+            messages.error(request, "Username already exists")
+        else:
+            user = User.objects.create_user(
+                username=username, email=email, password=password
+            )
+            Customer.objects.create(user=user, name=username, email=email)
+            messages.success(request, "Account created successfully")
+            return redirect("login")
+    return render(request, "auth.html")
 
 
 def shop(request):
@@ -98,8 +136,54 @@ def cart(request):
 
 
 def checkout(request):
-    context = {}
+    if request.user.is_authenticated:
+        customer = request.user.customer
+        cart = Cart.objects.get(customer=customer)
+        items = cart.items.all()
+        total = sum([item.Total for item in items])
+    else:
+        items = []
+        total = 0
+    context = {"items": items, "total": total}
     return render(request, "checkout.html", context)
+
+
+def order(request):
+    if request.method == "POST":
+        # Lấy dữ liệu từ form
+        first_name = request.POST.get("c_fname")
+        last_name = request.POST.get("c_lname")
+        address = request.POST.get("c_address")
+        country = request.POST.get("c_state_country")
+        email = request.POST.get("c_email_address")
+        phone = request.POST.get("c_phone")
+        note = request.POST.get("c_order_notes")
+        if request.user.is_authenticated:
+            customer = request.user.customer
+            cart = Cart.objects.get(customer=customer)
+            items = cart.items.all()
+            total = sum([item.Total for item in items])
+        else:
+            items = []
+            total = 0
+        order = Order.objects.create(customer=request.user.customer)
+        order.firstname = first_name
+        order.lastname = last_name
+        order.address = address
+        order.state = country
+        order.email = email
+        order.phone = phone
+        order.note = note
+        order.save()
+        for item in items:
+            order_item = OrderItem.objects.create(product=item.product, order=order)
+            order_item.quantity = item.quantity
+            order_item.save()
+        # Xử lý dữ liệu form (ví dụ: lưu vào cơ sở dữ liệu)
+        # ...
+
+        # Chuyển hướng đến trang cảm ơn sau khi đặt hàng thành công
+        return redirect("thankyou")
 
 
 def thankyou(request):
@@ -108,23 +192,18 @@ def thankyou(request):
 
 
 def add_to_cart(request, id):
-    try:
-        product = Product.objects.get(id=id)
-        cart, created = Cart.objects.get_or_create(user=request.user, active=True)
-        if cart is None:
-            cart = Cart.objects.create(user=request.user, active=True)
-        cart_item, created = CartItem.objects.get_or_create(cart=cart, product=product)
-        if created:
-            cart_item.quantity += 1
-        else:
-            cart_item.quantity = 1
-        cart_item.save()
-        cart.save()
-        return JsonResponse({"success": True, "message": "Product added to cart"})
-    except Product.DoesNotExist:
-        return JsonResponse({"success": False, "message": "Product not found"})
-    except Exception as e:
-        return JsonResponse({"success": False, "message": str(e)})
+    product = Product.objects.get(id=id)
+    cart, created = Cart.objects.get_or_create(customer=request.user.customer)
+    if cart is None:
+        cart = Cart.objects.create(customer=request.user.customer)
+    cart_item, created = CartItem.objects.get_or_create(cart=cart, product=product)
+    if cart_item is not None:
+        cart_item.quantity += 1
+    else:
+        cart_item.quantity = 1
+    cart_item.save()
+    cart.save()
+    return redirect("shop")
 
 
 def add_quantity(request, id, quantity):
