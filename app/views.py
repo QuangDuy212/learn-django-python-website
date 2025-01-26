@@ -8,6 +8,7 @@ from django.shortcuts import redirect
 from django.contrib.auth import authenticate, login as auth_login, logout as auth_logout
 from django.contrib.auth.models import User
 from django.contrib import messages
+from django.contrib.auth.forms import UserCreationForm
 
 
 def paginate_queryset(queryset, page, per_page=10):
@@ -46,39 +47,14 @@ def index(request):
     return render(request, "home.html", context)
 
 
-def auth(request):
-    context = {}
-    return render(request, "auth.html", context)
-
-
-def login(request):
+def register(request):
+    form = CreateUserForm()
     if request.method == "POST":
-        username = request.POST.get("username")
-        password = request.POST.get("password")
-        user = authenticate(request, username=username, password=password)
-        if user is not None:
-            auth_login(request, user)
-            return redirect("index")
-        else:
-            messages.error(request, "Invalid username or password")
-    return render(request, "auth.html")
-
-
-def signup(request):
-    if request.method == "POST":
-        username = request.POST.get("username")
-        email = request.POST.get("email")
-        password = request.POST.get("password")
-        if User.objects.filter(username=username).exists():
-            messages.error(request, "Username already exists")
-        else:
-            user = User.objects.create_user(
-                username=username, email=email, password=password
-            )
-            Customer.objects.create(user=user, name=username, email=email)
-            messages.success(request, "Account created successfully")
-            return redirect("login")
-    return render(request, "auth.html")
+        form = CreateUserForm(request.POST)
+        if form.is_valid():
+            form.save()
+    context = {"form": form}
+    return render(request, "register.html", context)
 
 
 def shop(request):
@@ -176,6 +152,9 @@ def order(request):
         order.note = note
         order.save()
         for item in items:
+            cart = Cart.objects.get(customer=customer)
+            cart_item = CartItem.objects.get(cart=cart, product=item.product)
+            cart_item.delete()
             order_item = OrderItem.objects.create(product=item.product, order=order)
             order_item.quantity = item.quantity
             order_item.save()
@@ -196,11 +175,14 @@ def add_to_cart(request, id):
     cart, created = Cart.objects.get_or_create(customer=request.user.customer)
     if cart is None:
         cart = Cart.objects.create(customer=request.user.customer)
+
     cart_item, created = CartItem.objects.get_or_create(cart=cart, product=product)
-    if cart_item is not None:
-        cart_item.quantity += 1
-    else:
+
+    if created:
         cart_item.quantity = 1
+    else:
+        cart_item.quantity += 1
+
     cart_item.save()
     cart.save()
     return redirect("shop")

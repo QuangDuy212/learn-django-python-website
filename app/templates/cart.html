@@ -51,17 +51,17 @@
                     <td>
                       <div class="input-group mb-3 d-flex align-items-center quantity-container" style="max-width: 120px;">
                         <div class="input-group-prepend">
-                          <a href="{% url 'cart_quantity' item.product.id '-1' %}" class="btn btn-outline-black decrease">&minus;</a>
+                          <a href="{% url 'cart_quantity' item.id '-1' %}" class="btn btn-outline-black decrease">&minus;</a>
                         </div>
                         <input type="text" class="form-control text-center quantity-amount" value="{{ item.quantity }}" placeholder="" aria-label="Example text with button addon" aria-describedby="button-addon1" />
                         <div class="input-group-append">
-                          <a href="{% url 'cart_quantity' item.product.id '1' %}" ton class="btn btn-outline-black increase">&plus;</a>
+                          <a href="{% url 'cart_quantity' item.id '1' %}" ton class="btn btn-outline-black increase">&plus;</a>
                         </div>
                       </div>
                     </td>
                     <td>${{ item.Total|floatformat:2 }}</td>
                     <td>
-                      <a href="{% url 'remove_from_cart' item.product.id %}" class="btn btn-black btn-sm">X</a>
+                      <a href="{% url 'remove_from_cart' item.id %}" class="btn btn-black btn-sm">X</a>
                     </td>
                   </tr>
                 {% endfor %}
