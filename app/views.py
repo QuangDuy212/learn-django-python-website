@@ -5,10 +5,11 @@ from django.http import Http404
 from django.http import JsonResponse
 from django.views.decorators.http import require_POST
 from django.shortcuts import redirect
-from django.contrib.auth import authenticate, login as auth_login, logout as auth_logout
+from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.contrib import messages
 from django.contrib.auth.forms import UserCreationForm
+from django.contrib import messages
 
 
 def paginate_queryset(queryset, page, per_page=10):
@@ -53,8 +54,30 @@ def register(request):
         form = CreateUserForm(request.POST)
         if form.is_valid():
             form.save()
+            return redirect("index")
     context = {"form": form}
     return render(request, "register.html", context)
+
+
+def login_page(request):
+    if request.user.is_authenticated:
+        return redirect("index")
+    if request.method == "POST":
+        username = request.POST.get("username")
+        password = request.POST.get("password")
+        user = authenticate(request, username=username, password=password)
+        if user is not None:
+            login(request, user)
+            return redirect("index")
+        else:
+            messages.info(request, "Username or password is incorrect!")
+    context = {}
+    return render(request, "login.html", context)
+
+
+def logout_page(request):
+    logout(request)
+    return redirect("login")
 
 
 def shop(request):
@@ -100,8 +123,14 @@ def contact(request):
 
 def cart(request):
     if request.user.is_authenticated:
-        customer = request.user.customer
-        cart = Cart.objects.get(customer=customer)
+        try:
+            customer = request.user.customer
+        except Customer.DoesNotExist:
+            customer = Customer.objects.create(user=request.user)
+        try:
+            cart = Cart.objects.get(customer=customer)
+        except:
+            cart = Cart.objects.create(customer=customer)
         items = cart.items.all()
         total = sum([item.Total for item in items])
     else:

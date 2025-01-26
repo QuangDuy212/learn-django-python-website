@@ -1,10 +1,10 @@
-<!--                                                                                                   /*
+<!--                                                                                                                             /*
 * Bootstrap 5
 * Template Name: Furni
 * Template Author: Untree.co
 * Template URI: https://untree.co/
 * License: https://creativecommons.org/licenses/by/3.0/
-*/                                                                                                   -->
+*/                                                                                                                             -->
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
@@ -57,9 +57,22 @@
           </ul>
 
           <ul class="custom-navbar-cta navbar-nav mb-2 mb-md-0 ms-5">
-            <li>
-              <a class="nav-link" href="#"><img src="{% static 'app/images/user.svg' %}" /></a>
-            </li>
+            <!-- filepath: /d:/Workspace/learn/web/full-stack/backend/django/start/app/templates/base.html -->
+            {% comment %} {% if user.is_authenticated %}
+              <li>
+                <a class="nav-link" href="#"><img src="{% static 'app/images/user.svg' %}" /></a>
+              </li>
+            {% endif %} {% endcomment %}
+            {% if user.is_authenticated is not True %}
+              <li>
+                <a class="nav-link" href="{% url 'login' %}">Đăng nhập</a>
+              </li>
+            {% endif %}
+            {% if user.is_authenticated %}
+              <li>
+                <a class="nav-link" href="{% url 'logout' %}">Đăng xuất</a>
+              </li>
+            {% endif %}
             <li>
               <a class="nav-link" href="{% url 'cart' %}"><img src="{% static 'app/images/cart.svg' %}" /></a>
             </li>
